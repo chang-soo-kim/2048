@@ -20,7 +20,6 @@ public class Map : MonoBehaviour
                 cube.transform.SetParent(gameObject.transform);
             }
         }
-
         
     }
 

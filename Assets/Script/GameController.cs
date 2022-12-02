@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CubeSpawner : MonoBehaviour
+public class GameController : MonoBehaviour
 {
     public int count = 0;
     public int CreateCount = 0;
     [SerializeField]
     Cube CubePrefab;
     public Cube[,] allCube;
+
+    public int Gold = 0;
+    public float damage = 5f;
 
     public void CreateCube()
     {
@@ -70,5 +73,63 @@ public class CubeSpawner : MonoBehaviour
         allCube = new Cube[5,5];
         CreateCount = 1;
         CreateCube();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            for (int x = 4; x >= 0; x--)
+            {
+                for (int y = 4; y >= 0; y--)
+                {
+                    if (allCube[x, y] != null)
+                        allCube[x, y].Right();
+                }
+            }
+
+            CreateCube();
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            for (int x = 0; x < 5; x++)
+            {
+                for (int y = 0; y < 5; y++)
+                {
+                    if (allCube[x, y] != null)
+                        allCube[x, y].Left();
+                }
+            }
+            CreateCube();
+        }
+
+
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            for (int y = 4; y >= 0; y--)
+            {
+                for (int x = 4; x >= 0; x--)
+                {
+                    if (allCube[x, y] != null)
+                        allCube[x, y].Up();
+                }
+            }
+            CreateCube();
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            for (int y = 0; y < 5; y++)
+            {
+                for (int x = 0; x < 5; x++)
+                {
+                    if (allCube[x, y] != null)
+                        allCube[x, y].Down();
+                }
+            }
+            CreateCube();
+        }
+
+
+
     }
 }
