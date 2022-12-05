@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+	public Action Create;
 	private UIManager() { }
 	private static UIManager _instance = null; //static으로 싱글톤 클래스 유일 선언
 	public static UIManager Instance //프로퍼티 선언
@@ -26,7 +28,35 @@ public class UIManager : MonoBehaviour
 	}
     [SerializeField]
 	public Image image;
-	
+	[SerializeField]
+	public TextMeshProUGUI Goldtxt;
+	[SerializeField]
+	public TextMeshProUGUI enemycounttxt;
+	[SerializeField]
+	public Button CreateButton;
+	[SerializeField]
+	public Button RemoveButton;
+
+    
+	public void On_Click_Create()
+    {
+		if(GameController.Instance.Gold >= 10)
+        {
+			Create();
+			GameController.Instance.Gold -= 10;
+		}
+    }
+	public void On_Click_Battle()
+	{
+		if (!GameController.Instance.isBattle)
+		{
+			GameController.Instance.CreateEnemy();
+			GameController.Instance.isBattle = true;
+			++GameController.Instance.Wave;
+		}
+
+		
+	}
 
 
 	public void GameOver()
@@ -34,5 +64,7 @@ public class UIManager : MonoBehaviour
 		image.gameObject.SetActive(true);
 		Time.timeScale = 0;
 	}
+
+	
 
 }

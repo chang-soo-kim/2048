@@ -11,10 +11,12 @@ public class Cube : MonoBehaviour
     float min = 100f;
     float now;
     float oldTime = 0f;
+    float damage = 0f;
     [SerializeField]
     TextMeshPro numtext;
     void Start()
     {
+        
         gameController = FindObjectOfType<GameController>();
         
     }
@@ -45,14 +47,10 @@ public class Cube : MonoBehaviour
         
         if (colliders.Length > 0 && oldTime > 1f)
         {
-            --colliders[0].gameObject.GetComponent<Enemy>().curHP;
+            damage = Num * 0.5f;
+            colliders[0].gameObject.GetComponent<Enemy>().curHP -= (int)damage;
             oldTime = 0f;
         }
-
-
-        
-
-
 
         numtext.text = Num.ToString();
     }
@@ -67,7 +65,7 @@ public class Cube : MonoBehaviour
     {
         if (gameObject.transform.position.x < 4)
         {
-            ++gameController.CreateCount;
+            //++gameController.CreateCount;
             while (gameObject.transform.position.x < 4)
             {
                 //  맨끝까지 아무것도 없을때 끝가지감
@@ -90,7 +88,7 @@ public class Cube : MonoBehaviour
                 // 둘다 아니면 멈춤
                 else
                 {
-                    --gameController.CreateCount;
+                   // --gameController.CreateCount;
                     break;
                 }
             }
@@ -101,7 +99,7 @@ public class Cube : MonoBehaviour
     {
         if (gameObject.transform.position.z < 4)
         {
-            ++gameController.CreateCount;
+            //++gameController.CreateCount;
             while (gameObject.transform.position.z < 4)
             {
 
@@ -123,7 +121,7 @@ public class Cube : MonoBehaviour
                 }
                 else
                 {
-                    --gameController.CreateCount;
+                    //--gameController.CreateCount;
                     break;
                 }
             }
@@ -134,7 +132,7 @@ public class Cube : MonoBehaviour
     {
         if (gameObject.transform.position.x > 0)
         {
-            ++gameController.CreateCount;
+            //++gameController.CreateCount;
             while (gameObject.transform.position.x > 0)
             {
                 if (gameController.allCube[(int)transform.position.x - 1, (int)transform.position.z] == null)
@@ -155,7 +153,7 @@ public class Cube : MonoBehaviour
                 }
                 else
                 {
-                    --gameController.CreateCount;
+                    //--gameController.CreateCount;
                     break;
                 }
             }
@@ -165,7 +163,7 @@ public class Cube : MonoBehaviour
     {
         if (gameObject.transform.position.z > 0)
         {
-            ++gameController.CreateCount;
+            //++gameController.CreateCount;
             while (gameObject.transform.position.z > 0)
             {
                 if (gameController.allCube[(int)transform.position.x, (int)transform.position.z - 1] == null)
@@ -186,7 +184,7 @@ public class Cube : MonoBehaviour
                 }
                 else
                 {
-                    --gameController.CreateCount;
+                    //--gameController.CreateCount;
                     break;
                 }
             }

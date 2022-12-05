@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Enemy : MonoBehaviour
 {
@@ -10,11 +11,13 @@ public class Enemy : MonoBehaviour
     int speed = 1;
     Vector3 dir;
     int dropGold = 10;
-    
+    [SerializeField]
+    TextMeshPro curHPtxt;
+
     void Start()
     {
         dir = Vector3.forward;
-        curHP = maxHP;
+        curHP = maxHP * GameController.Instance.Wave;
     }
 
     
@@ -34,18 +37,22 @@ public class Enemy : MonoBehaviour
         }
         else if (transform.position.z < -1f && dir == Vector3.back)
         {
+            --GameController.Instance.enemyLiveCount;
+            GameController.Instance.GameOver();
             Destroy(gameObject);
         }
         Debug.Log(curHP);
 
-        if(curHP > 0f)
+        if(curHP <= 0f)
         {
             Die();
         }
-
+        curHPtxt.text = curHP.ToString();
     }
     void Die()
     {
+        GameController.Instance.Gold += dropGold;
+
         Destroy(gameObject);
     }
 }
