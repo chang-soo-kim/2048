@@ -8,6 +8,11 @@ public class GameController : MonoBehaviour
     private GameController() { }
     private static GameController _instance = null; //static으로 싱글톤 클래스 유일 선언
     GameObject pool;
+    public GameObject removeCude;
+
+
+
+
     public static GameController Instance //프로퍼티 선언
     {
         get
@@ -104,7 +109,7 @@ public class GameController : MonoBehaviour
     {
         pool = new GameObject("EnemyPool");
         allCube = new Cube[5,5];
-        Wave = 1;
+        Wave = 0;
         //CreateCount = 1;
         enemyLiveCount = 5;
         CreateCube(); 
@@ -116,7 +121,7 @@ public class GameController : MonoBehaviour
     void Update()
     {
         UIManager.Instance.Goldtxt.text = "Gold" + Gold.ToString();
-        //enemyLiveCount = 10;
+        UIManager.Instance.WaveCounttxt.text = "Wave" + Wave;
         UIManager.Instance.enemycounttxt.text = "Count" + enemyLiveCount.ToString();
         if (pool.transform.childCount == 0 && isBattle)
         {
@@ -125,6 +130,29 @@ public class GameController : MonoBehaviour
 
         if (isBattle) return;
         MoveControll();
+
+        RemoveCube();
+    }
+
+    public void RemoveCube()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                if(hit.transform.gameObject.tag == "PlayerCube")
+                {
+                if(removeCude != null)
+                removeCude.GetComponent<MeshRenderer>().material.color = Color.red;
+                removeCude = hit.transform.gameObject;
+                removeCude.GetComponent<MeshRenderer>().material.color = Color.cyan;
+                Debug.Log(removeCude);
+                }
+            }
+
+        }
     }
 
     public void MoveControll()
@@ -139,7 +167,7 @@ public class GameController : MonoBehaviour
                         allCube[x, y].Right();
                 }
             }
-            //CreateCube();
+            CreateCube();
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -151,7 +179,7 @@ public class GameController : MonoBehaviour
                         allCube[x, y].Left();
                 }
             }
-            //CreateCube();
+            CreateCube();
         }
 
 
@@ -165,7 +193,7 @@ public class GameController : MonoBehaviour
                         allCube[x, y].Up();
                 }
             }
-            //CreateCube();
+            CreateCube();
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
@@ -177,7 +205,7 @@ public class GameController : MonoBehaviour
                         allCube[x, y].Down();
                 }
             }
-            //CreateCube();
+            CreateCube();
         }
     }
 
