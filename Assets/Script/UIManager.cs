@@ -33,29 +33,19 @@ public class UIManager : MonoBehaviour
 	[SerializeField]
 	public TextMeshProUGUI enemycounttxt;
 	[SerializeField]
-	public TextMeshProUGUI WaveCounttxt;
-	[SerializeField]
 	public Button CreateButton;
 	[SerializeField]
 	public Button RemoveButton;
 
     
-	//public void On_Click_Create()
- //   {
-	//	if(GameController.Instance.Gold >= 10 && !GameController.Instance.isBattle)
- //       {
-	//		Create();
-	//		GameController.Instance.Gold -= 10;
-	//	}
- //   }
-	public void On_Click_Remove()
-	{
-        if (GameController.Instance.removeCude != null && GameController.Instance.Gold >= 100)
+	public void On_Click_Create()
+    {
+		if(GameController.Instance.Gold >= 10)
         {
-			GameController.Instance.Gold -= 100;
-			Destroy(GameController.Instance.removeCude);
-        }
-	}
+			Create();
+			GameController.Instance.Gold -= 10;
+		}
+    }
 	public void On_Click_Battle()
 	{
 		if (!GameController.Instance.isBattle)
