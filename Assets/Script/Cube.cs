@@ -24,18 +24,26 @@ public class Cube : MonoBehaviour
 
     public void Update()
     {
+        Att();
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;    
+        Gizmos.DrawSphere(transform.position, 3f);
+    }
+
+    public void Att()
+    {
         Collider[] colliders = Physics.OverlapSphere(transform.position, 3f, 1 << LayerMask.NameToLayer("Enemy"));
-        
-        
-    
+
         oldTime += Time.deltaTime;
-        
-        for (int i = 0; i < colliders.Length-1; i++)
+
+        for (int i = 0; i < colliders.Length - 1; i++)
         {
-            if(colliders.Length > 2)
+            if (colliders.Length > 2)
             {
                 now = Vector3.Distance(colliders[i].transform.position, transform.position);
-                
+
                 if (min < now)
                 {
                     colliders[0] = colliders[i];
@@ -44,7 +52,7 @@ public class Cube : MonoBehaviour
             }
         }
         min = 100f;
-        
+
         if (colliders.Length > 0 && oldTime > 1f)
         {
             damage = Num * 0.5f;
@@ -54,13 +62,6 @@ public class Cube : MonoBehaviour
 
         numtext.text = Num.ToString();
     }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;    
-        Gizmos.DrawSphere(transform.position, 3f);
-    }
-
-
     public void Right()
     {
         if (gameObject.transform.position.x < 4)

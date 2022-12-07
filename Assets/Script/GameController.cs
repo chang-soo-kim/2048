@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    
+
     private GameController() { }
     private static GameController _instance = null; //static으로 싱글톤 클래스 유일 선언
     GameObject pool;
+    public GameObject removeCude;
+
+
+
+
     public static GameController Instance //프로퍼티 선언
     {
         get
@@ -47,7 +52,7 @@ public class GameController : MonoBehaviour
 
     public void CreateCube()
     {
-        
+
         if (count == 25)
         {
             //if(GameOverCheck())
@@ -59,19 +64,20 @@ public class GameController : MonoBehaviour
         //if (CreateCount == 0) return;
 
 
-        int x = Random.Range(0 , 5);
-        int y = Random.Range(0 , 5);
+        int x = Random.Range(0, 5);
+        int y = Random.Range(0, 5);
 
-        while (allCube[x,y] != null)
+        while (allCube[x, y] != null)
         {
             x = Random.Range(0, 5);
             y = Random.Range(0, 5);
         }
-        allCube[x,y] = Instantiate(CubePrefab, new Vector3(x, 1.25f, y), Quaternion.identity);
+        Gold -= 10;
+        allCube[x, y] = Instantiate(CubePrefab, new Vector3(x, 1.25f, y), Quaternion.identity);
         allCube[x, y].transform.SetParent(gameObject.transform);
         allCube[x, y].gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
         ++count;
-        
+
     }
 
     //public bool GameOverCheck()
@@ -103,20 +109,20 @@ public class GameController : MonoBehaviour
     void Start()
     {
         pool = new GameObject("EnemyPool");
-        allCube = new Cube[5,5];
-        Wave = 1;
+        allCube = new Cube[5, 5];
+        Wave = 0;
         //CreateCount = 1;
         enemyLiveCount = 5;
-        CreateCube(); 
+        CreateCube();
         UIManager.Instance.Create += CreateCube;
-        Gold = 500;
-       // CreateEnemy();
+        Gold = 50;
+        // CreateEnemy();
     }
 
     void Update()
     {
         UIManager.Instance.Goldtxt.text = "Gold" + Gold.ToString();
-        //enemyLiveCount = 10;
+        UIManager.Instance.WaveCounttxt.text = "Wave" + Wave;
         UIManager.Instance.enemycounttxt.text = "Count" + enemyLiveCount.ToString();
         if (pool.transform.childCount == 0 && isBattle)
         {
@@ -125,10 +131,36 @@ public class GameController : MonoBehaviour
 
         if (isBattle) return;
         MoveControll();
+
+        RemoveCube();
+    }
+
+    public void RemoveCube()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.transform.gameObject.tag == "PlayerCube")
+                {
+                    if (removeCude != null)
+                        removeCude.GetComponent<MeshRenderer>().material.color = Color.red;
+                    removeCude = hit.transform.gameObject;
+                    removeCude.GetComponent<MeshRenderer>().material.color = Color.cyan;
+                    Debug.Log(removeCude);
+                }
+            }
+
+        }
     }
 
     public void MoveControll()
     {
+        
+        if (Gold < 10 || isBattle) return;
+
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             for (int x = 4; x >= 0; x--)
@@ -139,7 +171,7 @@ public class GameController : MonoBehaviour
                         allCube[x, y].Right();
                 }
             }
-            //CreateCube();
+            CreateCube();
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -151,7 +183,7 @@ public class GameController : MonoBehaviour
                         allCube[x, y].Left();
                 }
             }
-            //CreateCube();
+            CreateCube();
         }
 
 
@@ -165,7 +197,7 @@ public class GameController : MonoBehaviour
                         allCube[x, y].Up();
                 }
             }
-            //CreateCube();
+            CreateCube();
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
@@ -177,7 +209,7 @@ public class GameController : MonoBehaviour
                         allCube[x, y].Down();
                 }
             }
-            //CreateCube();
+            CreateCube();
         }
     }
 
@@ -185,13 +217,13 @@ public class GameController : MonoBehaviour
     {
         for (int i = 0; i < enemyCount + Wave; i++)
         {
-            Instantiate(EnemyPrefab, new Vector3 (-1.5f,1.25f,-1.5f-(i*1.5f)), Quaternion.identity,pool.transform );
+            Instantiate(EnemyPrefab, new Vector3(-1.5f, 1.25f, -1.5f - (i * 1.5f)), Quaternion.identity, pool.transform);
         }
     }
 
     public void GameOver()
     {
-        if(enemyLiveCount == 0)
+        if (enemyLiveCount == 0)
         {
             UIManager.Instance.GameOver();
         }
