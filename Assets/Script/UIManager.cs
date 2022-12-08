@@ -48,14 +48,14 @@ public class UIManager : MonoBehaviour
 	//		GameController.Instance.Gold -= 10;
 	//	}
  //   }
-	public void On_Click_Remove()
-	{
-        if (GameController.Instance.removeCude != null && GameController.Instance.Gold >= 100)
-        {
-			GameController.Instance.Gold -= 100;
-			Destroy(GameController.Instance.removeCude);
-        }
-	}
+	//public void On_Click_Remove()
+	//{
+ //       if (GameController.Instance.removeCude != null && GameController.Instance.Gold >= 100)
+ //       {
+	//		GameController.Instance.Gold -= 100;
+	//		Destroy(GameController.Instance.removeCude);
+ //       }
+	//}
 	public void On_Click_Battle()
 	{
 		if (!GameController.Instance.isBattle)
@@ -64,8 +64,6 @@ public class UIManager : MonoBehaviour
 			GameController.Instance.isBattle = true;
 			++GameController.Instance.Wave;
 		}
-
-		
 	}
 
 
@@ -74,7 +72,5 @@ public class UIManager : MonoBehaviour
 		image.gameObject.SetActive(true);
 		Time.timeScale = 0;
 	}
-
-	
 
 }

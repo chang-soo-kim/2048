@@ -25,14 +25,14 @@ public class Enemy : MonoBehaviour
     {
         Vector3 Move = dir * Time.deltaTime * speed;
         transform.Translate(Move, Space.World);
-        if (transform.position.z > 5.5f && dir == Vector3.forward)
+        if (transform.position.z > 4.5f && dir == Vector3.forward)
         {
-            transform.position = new Vector3(-1.5f, 1.25f,5.5f);
+            transform.position = new Vector3(-1.5f, 1.25f,4.5f);
             dir = Vector3.right;
         }
-        else if (transform.position.x > 5.5f && dir == Vector3.right)
+        else if (transform.position.x > 4.5f && dir == Vector3.right)
         {
-            transform.position = new Vector3(5.5f, 1.25f, 5.5f);
+            transform.position = new Vector3(4.5f, 1.25f, 4.5f);
             dir = Vector3.back;
         }
         else if (transform.position.z < -1f && dir == Vector3.back)

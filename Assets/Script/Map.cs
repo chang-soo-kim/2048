@@ -5,7 +5,7 @@ using UnityEngine;
 public class Map : MonoBehaviour
 {
     [SerializeField]
-    static int mapsize = 5;
+    static int mapsize = 4;
     
     [SerializeField]
     GameObject cubemap;

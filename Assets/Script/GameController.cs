@@ -9,6 +9,8 @@ public class GameController : MonoBehaviour
     private static GameController _instance = null; //static으로 싱글톤 클래스 유일 선언
     GameObject pool;
     public GameObject removeCude;
+    [SerializeField]
+    GameObject[] BlockPrefab;
 
 
 
@@ -36,13 +38,13 @@ public class GameController : MonoBehaviour
     public int count = 0;
     //public int CreateCount = 0;
     [SerializeField]
-    Cube CubePrefab;
+    Block CubePrefab;
     [SerializeField]
     Enemy EnemyPrefab;
     public int enemyLiveCount;
     int enemyCount = 10;
 
-    public Cube[,] allCube;
+    public Block[,] allBlock;
 
     public int Gold = 0;
     public float damage = 5f;
@@ -50,10 +52,10 @@ public class GameController : MonoBehaviour
     public int Wave;
 
 
-    public void CreateCube()
+    public void CreateBlock()
     {
 
-        if (count == 25)
+        if (count == 16)
         {
             //if(GameOverCheck())
             //{
@@ -62,23 +64,28 @@ public class GameController : MonoBehaviour
             return;
         }
         //if (CreateCount == 0) return;
+        
 
+        int x = Random.Range(0, 4);
+        int y = Random.Range(0, 4);
 
-        int x = Random.Range(0, 5);
-        int y = Random.Range(0, 5);
-
-        while (allCube[x, y] != null)
+        while (allBlock[x, y] != null)
         {
-            x = Random.Range(0, 5);
-            y = Random.Range(0, 5);
+            x = Random.Range(0, 4);
+            y = Random.Range(0, 4);
         }
         Gold -= 10;
-        allCube[x, y] = Instantiate(CubePrefab, new Vector3(x, 1.25f, y), Quaternion.identity);
-        allCube[x, y].transform.SetParent(gameObject.transform);
-        allCube[x, y].gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
+        allBlock[x, y] = Instantiate(CubePrefab, new Vector3(x, 1.25f, y), Quaternion.identity);
+        allBlock[x, y].transform.SetParent(gameObject.transform);
+        //allBlock[x, y].gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
         ++count;
 
     }
+    public void CreatePrefab(int x, int y , int Num)
+    {
+        Instantiate(BlockPrefab[Num], new Vector3(x, 1.25f, y), Quaternion.identity,allBlock[x, y].transform);
+    }
+
 
     //public bool GameOverCheck()
     //{
@@ -86,7 +93,7 @@ public class GameController : MonoBehaviour
     //    {
     //        for (int y = 0; y < 4; y++)
     //        {
-    //            if(allCube[x, y].Num == allCube[x, y + 1].Num)
+    //            if(allBlock[x, y].Num == allBlock[x, y + 1].Num)
     //            {
     //                return false;
     //            }
@@ -96,7 +103,7 @@ public class GameController : MonoBehaviour
     //    {
     //        for (int x = 0; x < 4; x++)
     //        {
-    //            if (allCube[x, y].Num == allCube[x+1, y].Num)
+    //            if (allBlock[x, y].Num == allBlock[x+1, y].Num)
     //            {
     //                return false;
     //            }
@@ -109,21 +116,21 @@ public class GameController : MonoBehaviour
     void Start()
     {
         pool = new GameObject("EnemyPool");
-        allCube = new Cube[5, 5];
+        allBlock = new Block[4, 4];
         Wave = 0;
         //CreateCount = 1;
         enemyLiveCount = 5;
-        CreateCube();
-        UIManager.Instance.Create += CreateCube;
+        CreateBlock();
+        UIManager.Instance.Create += CreateBlock;
         Gold = 50;
         // CreateEnemy();
     }
 
     void Update()
     {
-        UIManager.Instance.Goldtxt.text = "Gold" + Gold.ToString();
-        UIManager.Instance.WaveCounttxt.text = "Wave" + Wave;
-        UIManager.Instance.enemycounttxt.text = "Count" + enemyLiveCount.ToString();
+        //UIManager.Instance.Goldtxt.text = "Gold" + Gold.ToString();
+        //UIManager.Instance.WaveCounttxt.text = "Wave" + Wave;
+        //UIManager.Instance.enemycounttxt.text = "Count" + enemyLiveCount.ToString();
         if (pool.transform.childCount == 0 && isBattle)
         {
             isBattle = false;
@@ -152,64 +159,64 @@ public class GameController : MonoBehaviour
                     Debug.Log(removeCude);
                 }
             }
-
         }
     }
 
     public void MoveControll()
     {
         
-        if (Gold < 10 || isBattle) return;
+        //if (Gold < 10 || isBattle) return;
+        if (isBattle) return;
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            for (int x = 4; x >= 0; x--)
+            for (int x = 3; x >= 0; x--)
             {
-                for (int y = 4; y >= 0; y--)
+                for (int y = 3; y >= 0; y--)
                 {
-                    if (allCube[x, y] != null)
-                        allCube[x, y].Right();
+                    if (allBlock[x, y] != null)
+                    allBlock[x, y].Right();
                 }
             }
-            CreateCube();
+            CreateBlock();
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            for (int x = 0; x < 5; x++)
+            for (int x = 0; x < 4; x++)
             {
-                for (int y = 0; y < 5; y++)
+                for (int y = 0; y < 4; y++)
                 {
-                    if (allCube[x, y] != null)
-                        allCube[x, y].Left();
+                    if (allBlock[x, y] != null)
+                        allBlock[x, y].Left();
                 }
             }
-            CreateCube();
+            CreateBlock();
         }
 
 
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            for (int y = 4; y >= 0; y--)
+            for (int y = 3; y >= 0; y--)
             {
-                for (int x = 4; x >= 0; x--)
+                for (int x = 3; x >= 0; x--)
                 {
-                    if (allCube[x, y] != null)
-                        allCube[x, y].Up();
+                    if (allBlock[x, y] != null)
+                        allBlock[x, y].Up();
                 }
             }
-            CreateCube();
+            CreateBlock();
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            for (int y = 0; y < 5; y++)
+            for (int y = 0; y < 4; y++)
             {
-                for (int x = 0; x < 5; x++)
+                for (int x = 0; x < 4; x++)
                 {
-                    if (allCube[x, y] != null)
-                        allCube[x, y].Down();
+                    if (allBlock[x, y] != null)
+                        allBlock[x, y].Down();
                 }
             }
-            CreateCube();
+            CreateBlock();
         }
     }
 
@@ -228,5 +235,4 @@ public class GameController : MonoBehaviour
             UIManager.Instance.GameOver();
         }
     }
-
 }
