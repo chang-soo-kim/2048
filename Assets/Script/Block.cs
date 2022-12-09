@@ -8,7 +8,7 @@ public class Block : MonoBehaviour
 
     
     public int Num = 2;
-    public int PrefabNum = 0;
+    public int PrefabNum;
     float min = 100f;
     float now;
     float oldTime = 0f;
@@ -21,6 +21,7 @@ public class Block : MonoBehaviour
 
     private void Start()
     {
+        PrefabNum = 0;
         x = (int)this.transform.position.x;
         z = (int)this.transform.position.z;
     }
@@ -102,52 +103,53 @@ public class Block : MonoBehaviour
 
     public void Right()
     {
-        //if (x < 3)
-        {
-            //++gameController.CreateCount;
-            while (x < 3)
+        
+            if (x < 3)
             {
                 //  맨끝까지 아무것도 없을때 끝가지감
                 if (GameController.Instance.allBlock[x + 1, z] == null)
                 {
                     transform.position += Vector3.right;
+
                     x = (int)this.transform.position.x;
                     z = (int)this.transform.position.z;
+
                     GameController.Instance.allBlock[x, z] = GameController.Instance.allBlock[x - 1, z];
                     GameController.Instance.allBlock[x - 1, z] = null;
+                    GameController.Instance.isMove = true;
+                    Right();
                 }
                 // 옆으로갔을때 같은게 있으면 합쳐짐
                 else if (GameController.Instance.allBlock[x + 1, z].Num == GameController.Instance.allBlock[x, z].Num)
                 {
                     GameController.Instance.allBlock[x, z] = null;
                     GameController.Instance.allBlock[x + 1, z].Num *= 2;
-
+                
                     ++GameController.Instance.allBlock[x + 1, z].PrefabNum;
-                    Destroy(GameController.Instance.allBlock[x + 1, z].transform.GetChild(1).gameObject);
+
+                    for (int i = 1; i < GameController.Instance.allBlock[x + 1, z].transform.childCount; i++)
+                    {
+                        Destroy(GameController.Instance.allBlock[x + 1, z].transform.GetChild(i).gameObject);
+                    }
+                    
                     GameController.Instance.CreatePrefab(x + 1, z, GameController.Instance.allBlock[x + 1, z].PrefabNum);
                     
-
                     --GameController.Instance.count;
                     Destroy(gameObject);
-                    break;
+                    //break;
 
                 }
                 // 둘다 아니면 멈춤
-                else
-                {
-                   // --gameController.CreateCount;
-                    break;
-                }
+                //else
+                //{
+                //    break;
+                //}
             }
         }
-    }
     public void Up()
     {
-
-            //++gameController.CreateCount;
-            while (z < 3)
+        if (z < 3)
             {
-
                 if (GameController.Instance.allBlock[x, z + 1] == null)
                 {
                     transform.position += Vector3.forward;
@@ -155,6 +157,8 @@ public class Block : MonoBehaviour
                     z = (int)this.transform.position.z;
                     GameController.Instance.allBlock[x, z] = GameController.Instance.allBlock[x, z - 1];
                     GameController.Instance.allBlock[x, z - 1] = null;
+                    GameController.Instance.isMove = true;
+                Up();
                 }
 
                 else if (GameController.Instance.allBlock[x, z + 1].Num == GameController.Instance.allBlock[x, z].Num)
@@ -163,25 +167,25 @@ public class Block : MonoBehaviour
                     GameController.Instance.allBlock[x, z + 1].Num *= 2;
 
                 ++GameController.Instance.allBlock[x, z + 1].PrefabNum;
-                Destroy(GameController.Instance.allBlock[x, z + 1].transform.GetChild(1).gameObject);
+
+
+                for (int i = 1; i < GameController.Instance.allBlock[x, z + 1].transform.childCount; i++)
+                {
+                    Destroy(GameController.Instance.allBlock[x, z + 1].transform.GetChild(i).gameObject);
+                }
                 GameController.Instance.CreatePrefab(x, z + 1, GameController.Instance.allBlock[x, z + 1].PrefabNum);
 
                 --GameController.Instance.count;
                     Destroy(gameObject);
-                    break;
+                    //break;
                 }
-                else
-                {
-                    //--gameController.CreateCount;
-                    break;
-                }
+
             }
         
     }
     public void Left()
-    {
-            //++gameController.CreateCount;
-            while (x > 0)
+    {      
+        if (x > 0)
             {
                 if (GameController.Instance.allBlock[x - 1, z] == null)
                 {
@@ -190,6 +194,8 @@ public class Block : MonoBehaviour
                     z = (int)this.transform.position.z;
                     GameController.Instance.allBlock[x, z] = GameController.Instance.allBlock[x + 1, z];
                     GameController.Instance.allBlock[x + 1, z] = null;
+                    GameController.Instance.isMove = true;
+                Left();
                 }
 
                 else if (GameController.Instance.allBlock[x - 1, z].Num == GameController.Instance.allBlock[x, z].Num)
@@ -198,55 +204,62 @@ public class Block : MonoBehaviour
                     GameController.Instance.allBlock[x - 1, z].Num *= 2;
 
                 ++GameController.Instance.allBlock[x - 1, z].PrefabNum;
-                Destroy(GameController.Instance.allBlock[x - 1, z].transform.GetChild(1).gameObject);
+
+                for (int i = 1; i < GameController.Instance.allBlock[x - 1, z].transform.childCount; i++)
+                {
+                    Destroy(GameController.Instance.allBlock[x - 1, z].transform.GetChild(i).gameObject);
+                }
                 GameController.Instance.CreatePrefab(x - 1, z, GameController.Instance.allBlock[x - 1, z].PrefabNum);
 
-                --GameController.Instance.count;
+                    --GameController.Instance.count;
                     Destroy(gameObject);
-                    break;
+                    //break;
                 }
-                else
-                {
-                    //--gameController.CreateCount;
-                    break;
-                }
+                //else
+                //{
+                //break;
+                //}
             }
         
     }
     public void Down()
     {
-
-            //++gameController.CreateCount;
-            while (z > 0)
+        if (z > 0)
+        {
+            if (GameController.Instance.allBlock[x, z - 1] == null)
             {
-                if (GameController.Instance.allBlock[x, z - 1] == null)
-                {
-                    transform.position += Vector3.back;
-                    x = (int)this.transform.position.x;
-                    z = (int)this.transform.position.z;
-                    GameController.Instance.allBlock[x, z] = GameController.Instance.allBlock[x, z + 1];
-                    GameController.Instance.allBlock[x, z + 1] = null;
-                }
+                transform.position += Vector3.back;
+                x = (int)this.transform.position.x;
+                z = (int)this.transform.position.z;
+                GameController.Instance.allBlock[x, z] = GameController.Instance.allBlock[x, z + 1];
+                GameController.Instance.allBlock[x, z + 1] = null;
+                GameController.Instance.isMove = true;
+                Down();
+            }
 
-                else if (GameController.Instance.allBlock[x, z - 1].Num == GameController.Instance.allBlock[x, z].Num)
-                {
-                    GameController.Instance.allBlock[x, z] = null;
-                    GameController.Instance.allBlock[x, z - 1].Num *= 2;
+            else if (GameController.Instance.allBlock[x, z - 1].Num == GameController.Instance.allBlock[x, z].Num)
+            {
+                GameController.Instance.allBlock[x, z] = null;
+                GameController.Instance.allBlock[x, z - 1].Num *= 2;
 
                 ++GameController.Instance.allBlock[x, z - 1].PrefabNum;
-                Destroy(GameController.Instance.allBlock[x, z - 1].transform.GetChild(1).gameObject);
+
+
+                for (int i = 1; i < GameController.Instance.allBlock[x, z - 1].transform.childCount; i++)
+                {
+                    Destroy(GameController.Instance.allBlock[x, z - 1].transform.GetChild(i).gameObject);
+                }
                 GameController.Instance.CreatePrefab(x, z - 1, GameController.Instance.allBlock[x, z - 1].PrefabNum);
 
                 --GameController.Instance.count;
-                    Destroy(gameObject);
-                    break;
-                }
-                else
-                {
-                    //--gameController.CreateCount;
-                    break;
-                }
+                Destroy(gameObject);
+                //break;
             }
+            //else
+            //{
 
+            //    break;
+            //}
+        }
     }
 }

@@ -36,7 +36,6 @@ public class GameController : MonoBehaviour
 
 
     public int count = 0;
-    //public int CreateCount = 0;
     [SerializeField]
     Block CubePrefab;
     [SerializeField]
@@ -50,11 +49,10 @@ public class GameController : MonoBehaviour
     public float damage = 5f;
     public bool isBattle = false;
     public int Wave;
-
+    public bool isMove;
 
     public void CreateBlock()
     {
-
         if (count == 16)
         {
             //if(GameOverCheck())
@@ -63,8 +61,8 @@ public class GameController : MonoBehaviour
             //}
             return;
         }
-        //if (CreateCount == 0) return;
-        
+
+        if (!isMove) return;
 
         int x = Random.Range(0, 4);
         int y = Random.Range(0, 4);
@@ -79,7 +77,7 @@ public class GameController : MonoBehaviour
         allBlock[x, y].transform.SetParent(gameObject.transform);
         //allBlock[x, y].gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
         ++count;
-
+        isMove = false;
     }
     public void CreatePrefab(int x, int y , int Num)
     {
@@ -118,7 +116,8 @@ public class GameController : MonoBehaviour
         pool = new GameObject("EnemyPool");
         allBlock = new Block[4, 4];
         Wave = 0;
-        //CreateCount = 1;
+        isMove = true;
+
         enemyLiveCount = 5;
         CreateBlock();
         UIManager.Instance.Create += CreateBlock;
@@ -147,8 +146,7 @@ public class GameController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 if (hit.transform.gameObject.tag == "PlayerCube")
                 {
@@ -164,7 +162,6 @@ public class GameController : MonoBehaviour
 
     public void MoveControll()
     {
-        
         //if (Gold < 10 || isBattle) return;
         if (isBattle) return;
 
