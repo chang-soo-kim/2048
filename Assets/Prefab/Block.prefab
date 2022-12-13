@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 6979175513511571514}
   m_Layer: 0
   m_Name: Block
-  m_TagString: Untagged
+  m_TagString: PlayerCube
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -275,6 +275,10 @@ PrefabInstance:
     - target: {fileID: 5921635177182744343, guid: 16613e4693419284b924ed64770fcd6a, type: 3}
       propertyPath: m_Name
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5921635177182744343, guid: 16613e4693419284b924ed64770fcd6a, type: 3}
+      propertyPath: m_TagString
+      value: PlayerCube
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16613e4693419284b924ed64770fcd6a, type: 3}

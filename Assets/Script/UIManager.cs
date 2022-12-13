@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-	public Action Create;
+
 	private UIManager() { }
 	private static UIManager _instance = null; //static으로 싱글톤 클래스 유일 선언
 	public static UIManager Instance //프로퍼티 선언
@@ -34,29 +34,22 @@ public class UIManager : MonoBehaviour
 	public TextMeshProUGUI enemycounttxt;
 	[SerializeField]
 	public TextMeshProUGUI WaveCounttxt;
-	[SerializeField]
-	public Button CreateButton;
+
 	[SerializeField]
 	public Button RemoveButton;
+	[SerializeField]
+	public Button BattleButton;
 
-    
-	//public void On_Click_Create()
- //   {
-	//	if(GameController.Instance.Gold >= 10 && !GameController.Instance.isBattle)
- //       {
-	//		Create();
-	//		GameController.Instance.Gold -= 10;
-	//	}
- //   }
-	//public void On_Click_Remove()
-	//{
- //       if (GameController.Instance.removeCude != null && GameController.Instance.Gold >= 100)
- //       {
-	//		GameController.Instance.Gold -= 100;
-	//		Destroy(GameController.Instance.removeCude);
- //       }
-	//}
-	public void On_Click_Battle()
+
+    public void on_click_remove()
+    {
+        if (GameController.Instance.removeCude != null && GameController.Instance.Gold >= 100)
+        {
+			GameController.Instance.Gold -= 100;
+            Destroy(GameController.Instance.removeCude);
+        }
+    }
+    public void On_Click_Battle()
 	{
 		if (!GameController.Instance.isBattle)
 		{

@@ -67,38 +67,7 @@ public class Block : MonoBehaviour
         numtext.text = Num.ToString();
     }
 
-    //public void emptySpaceMove( Vector3 dir)
-    //{
-    //    while (true)
-    //    {
-    //        //  맨끝까지 아무것도 없을때 끝가지감
-    //        if (GameController.Instance.allBlock[x + 1, z] == null)
-    //        {
-              
-    //            transform.position += dir;
-    //            x = (int)this.transform.position.x;
-    //            z = (int)this.transform.position.z;
-    //            GameController.Instance.allBlock[x, z] = GameController.Instance.allBlock[x - 1, z];
-    //            GameController.Instance.allBlock[x - 1, z] = null;
-    //        }
-    //        // 옆으로갔을때 같은게 있으면 합쳐짐
-    //        else if (GameController.Instance.allBlock[x + 1, z].Num == GameController.Instance.allBlock[x, z].Num)
-    //        {
-    //            GameController.Instance.allBlock[x, z] = null;
-    //            GameController.Instance.allBlock[x + 1, z].Num *= 2;
 
-    //            --GameController.Instance.count;
-    //            Destroy(gameObject);
-    //            break;
-    //        }
-    //        // 둘다 아니면 멈춤
-    //        else
-    //        {
-    //            // --gameController.CreateCount;
-    //            break;
-    //        }
-    //    }
-    //}
 
 
     public void Right()
@@ -124,8 +93,8 @@ public class Block : MonoBehaviour
                 {
                     GameController.Instance.allBlock[x, z] = null;
                     GameController.Instance.allBlock[x + 1, z].Num *= 2;
-                
-                    ++GameController.Instance.allBlock[x + 1, z].PrefabNum;
+                GameController.Instance.isMove = true;
+                ++GameController.Instance.allBlock[x + 1, z].PrefabNum;
 
                     for (int i = 1; i < GameController.Instance.allBlock[x + 1, z].transform.childCount; i++)
                     {
@@ -136,14 +105,9 @@ public class Block : MonoBehaviour
                     
                     --GameController.Instance.count;
                     Destroy(gameObject);
-                    //break;
 
                 }
-                // 둘다 아니면 멈춤
-                //else
-                //{
-                //    break;
-                //}
+     
             }
         }
     public void Up()
@@ -165,7 +129,7 @@ public class Block : MonoBehaviour
                 {
                     GameController.Instance.allBlock[x, z] = null;
                     GameController.Instance.allBlock[x, z + 1].Num *= 2;
-
+                GameController.Instance.isMove = true;
                 ++GameController.Instance.allBlock[x, z + 1].PrefabNum;
 
 
@@ -177,7 +141,6 @@ public class Block : MonoBehaviour
 
                 --GameController.Instance.count;
                     Destroy(gameObject);
-                    //break;
                 }
 
             }
@@ -202,7 +165,7 @@ public class Block : MonoBehaviour
                 {
                     GameController.Instance.allBlock[x, z] = null;
                     GameController.Instance.allBlock[x - 1, z].Num *= 2;
-
+                GameController.Instance.isMove = true;
                 ++GameController.Instance.allBlock[x - 1, z].PrefabNum;
 
                 for (int i = 1; i < GameController.Instance.allBlock[x - 1, z].transform.childCount; i++)
@@ -213,7 +176,6 @@ public class Block : MonoBehaviour
 
                     --GameController.Instance.count;
                     Destroy(gameObject);
-                    //break;
                 }
                 //else
                 //{
@@ -243,7 +205,7 @@ public class Block : MonoBehaviour
                 GameController.Instance.allBlock[x, z - 1].Num *= 2;
 
                 ++GameController.Instance.allBlock[x, z - 1].PrefabNum;
-
+                GameController.Instance.isMove = true;
 
                 for (int i = 1; i < GameController.Instance.allBlock[x, z - 1].transform.childCount; i++)
                 {
@@ -253,13 +215,9 @@ public class Block : MonoBehaviour
 
                 --GameController.Instance.count;
                 Destroy(gameObject);
-                //break;
+                
             }
-            //else
-            //{
-
-            //    break;
-            //}
+ 
         }
     }
 }

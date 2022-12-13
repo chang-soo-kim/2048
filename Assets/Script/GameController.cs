@@ -55,10 +55,7 @@ public class GameController : MonoBehaviour
     {
         if (count == 16)
         {
-            //if(GameOverCheck())
-            //{
-            //    return;
-            //}
+
             return;
         }
 
@@ -75,7 +72,7 @@ public class GameController : MonoBehaviour
         Gold -= 10;
         allBlock[x, y] = Instantiate(CubePrefab, new Vector3(x, 1.25f, y), Quaternion.identity);
         allBlock[x, y].transform.SetParent(gameObject.transform);
-        //allBlock[x, y].gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
+        
         ++count;
         isMove = false;
     }
@@ -83,33 +80,6 @@ public class GameController : MonoBehaviour
     {
         Instantiate(BlockPrefab[Num], new Vector3(x, 1.25f, y), Quaternion.identity,allBlock[x, y].transform);
     }
-
-
-    //public bool GameOverCheck()
-    //{
-    //    for (int x = 0; x < 5; x++)
-    //    {
-    //        for (int y = 0; y < 4; y++)
-    //        {
-    //            if(allBlock[x, y].Num == allBlock[x, y + 1].Num)
-    //            {
-    //                return false;
-    //            }
-    //        }
-    //    }
-    //    for (int y = 0; y < 5; y++)
-    //    {
-    //        for (int x = 0; x < 4; x++)
-    //        {
-    //            if (allBlock[x, y].Num == allBlock[x+1, y].Num)
-    //            {
-    //                return false;
-    //            }
-    //        }
-    //    }
-    //    return true;
-
-    //}
 
     void Start()
     {
@@ -120,16 +90,16 @@ public class GameController : MonoBehaviour
 
         enemyLiveCount = 5;
         CreateBlock();
-        UIManager.Instance.Create += CreateBlock;
+       
         Gold = 50;
         // CreateEnemy();
     }
 
     void Update()
     {
-        //UIManager.Instance.Goldtxt.text = "Gold" + Gold.ToString();
-        //UIManager.Instance.WaveCounttxt.text = "Wave" + Wave;
-        //UIManager.Instance.enemycounttxt.text = "Count" + enemyLiveCount.ToString();
+        UIManager.Instance.Goldtxt.text = "Gold" + Gold.ToString();
+        UIManager.Instance.WaveCounttxt.text = "Wave" + Wave;
+        UIManager.Instance.enemycounttxt.text = "Count" + enemyLiveCount.ToString();
         if (pool.transform.childCount == 0 && isBattle)
         {
             isBattle = false;
@@ -146,13 +116,18 @@ public class GameController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
+                Debug.Log(hit.transform.gameObject);
                 if (hit.transform.gameObject.tag == "PlayerCube")
                 {
+                   
                     if (removeCude != null)
                         removeCude.GetComponent<MeshRenderer>().material.color = Color.red;
+
                     removeCude = hit.transform.gameObject;
+
                     removeCude.GetComponent<MeshRenderer>().material.color = Color.cyan;
                     Debug.Log(removeCude);
                 }
@@ -162,7 +137,7 @@ public class GameController : MonoBehaviour
 
     public void MoveControll()
     {
-        //if (Gold < 10 || isBattle) return;
+        if (Gold < 10 || isBattle) return;
         if (isBattle) return;
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
